@@ -36,30 +36,30 @@ export default function DashboardPage() {
 
   const stats = [
     {
-      title: "Total Services",
+      title: "Servizi Totali",
       value: services.length,
-      description: "Available services",
+      description: "Servizi disponibili",
       icon: Package,
       color: "text-blue-600",
     },
     {
-      title: "Total Orders",
+      title: "Ordini Totali",
       value: orders.length,
-      description: "All time orders",
+      description: "Tutti gli ordini effettuati",
       icon: ShoppingCart,
       color: "text-green-600",
     },
     {
-      title: "Completed Orders",
+      title: "Ordini Completati",
       value: orders.filter((order) => order.status === "completed").length,
-      description: "Successfully completed",
+      description: "Completati con successo",
       icon: TrendingUp,
       color: "text-purple-600",
     },
     {
-      title: "Pending Orders",
+      title: "Ordini in Attesa",
       value: orders.filter((order) => order.status === "pending").length,
-      description: "Awaiting processing",
+      description: "In attesa di elaborazione",
       icon: Users,
       color: "text-orange-600",
     },
@@ -70,14 +70,14 @@ export default function DashboardPage() {
       <section className="overflow-hidden rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 p-8 text-white">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold">Welcome back, {user?.name}!</h2>
+            <h2 className="text-3xl font-bold">Bentornato, {user?.name}!</h2>
             <p className="max-w-[600px] text-white/80">
-              Here&apos;s what&apos;s happening with your SMM panel today.
+              Ecco cosa sta succedendo oggi con il tuo pannello SMM.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/admin/services">
                 <Button className="rounded-2xl bg-white text-indigo-700 hover:bg-white/90">
-                  Manage Services
+                  Gestisci Servizi
                 </Button>
               </Link>
               <Link href="/admin/orders">
@@ -85,7 +85,7 @@ export default function DashboardPage() {
                   variant="outline"
                   className="rounded-2xl bg-transparent border-white text-white hover:bg-white/10"
                 >
-                  Orders
+                  Ordini
                 </Button>
               </Link>
             </div>

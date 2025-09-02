@@ -1,9 +1,12 @@
-import React from 'react'
+import AddNewOrderWithService from "@/components/order/AddNewOrderWithService";
+import React from "react";
 
 const page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div className="md:w-1/2 mx-auto">
+      <AddNewOrderWithService />
+    </div>
+  );
+};
 
-export default page
+export default page;

@@ -29,10 +29,10 @@ export function CategoriesTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Created At</TableHead>
-            <TableHead>Updated At</TableHead>
-            <TableHead className="text-right max-w-10">Actions</TableHead>
+            <TableHead>Nome</TableHead>
+            <TableHead>Creato il</TableHead>
+            <TableHead>Aggiornato il</TableHead>
+            <TableHead className="text-right max-w-10">Azioni</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -44,8 +44,8 @@ export function CategoriesTable({
               >
                 <EmptyState
                   icon={Ungroup}
-                  title="No category created yet"
-                  description="There are no categories to display at the moment."
+                  title="Nessuna categoria creata"
+                  description="Al momento non ci sono categorie da visualizzare."
                 />
               </TableCell>
             </TableRow>
@@ -54,10 +54,10 @@ export function CategoriesTable({
               <TableRow key={index}>
                 <TableCell className="font-medium">{category.name}</TableCell>
                 <TableCell>
-                  {format(new Date(category.createdAt), "MMM dd, yyyy HH:mm")}
+                  {format(new Date(category.createdAt), "dd MMM yyyy HH:mm")}
                 </TableCell>
                 <TableCell>
-                  {format(new Date(category.updatedAt), "MMM dd, yyyy HH:mm")}
+                  {format(new Date(category.updatedAt), "dd MMM yyyy HH:mm")}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex gap-2 items-center">

@@ -69,12 +69,12 @@ export function CategoryForm({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? "Edit Category" : "Create New Category"}
+            {isEditing ? "Modifica Categoria" : "Crea Nuova Categoria"}
           </DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "Update the category information below."
-              : "Add a new category to organize your services."}
+              ? "Aggiorna le informazioni della categoria qui sotto."
+              : "Aggiungi una nuova categoria per organizzare i tuoi servizi."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -87,10 +87,10 @@ export function CategoryForm({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category Name</FormLabel>
+                  <FormLabel>Nome Categoria</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter category name"
+                      placeholder="Inserisci il nome della categoria"
                       {...field}
                       disabled={isLoading}
                     />
@@ -106,14 +106,18 @@ export function CategoryForm({
                 onClick={handleClose}
                 disabled={isLoading}
               >
-                Cancel
+                Annulla
               </Button>
               <Button
                 type="submit"
                 disabled={isLoading}
                 className="bg-blue-600 hover:bg-blue-700"
               >
-                {isLoading ? "Saving..." : isEditing ? "Update" : "Create"}
+                {isLoading
+                  ? "Salvataggio in corso..."
+                  : isEditing
+                  ? "Aggiorna"
+                  : "Crea"}
               </Button>
             </DialogFooter>
           </form>

@@ -67,7 +67,6 @@ import {
 import { toast } from "react-toastify";
 import { User } from "@/types/api";
 import { Switch } from "@/components/ui/switch";
-// import AddUser from "../../../components/user/AddUser";
 
 export default function UsersPage() {
   const { user: currentUser } = useAuth();
@@ -216,63 +215,73 @@ export default function UsersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Users Management
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight">Gestione Utenti</h1>
           <p className="text-muted-foreground">
-            Manage user accounts and permissions
+            Gestisci account e permessi degli utenti
           </p>
         </div>
-
-        {/*<AddUser /> */}
       </div>
 
-      {/* Statistics Cards */}
+      {/* Statistiche */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Utenti Totali</CardTitle>
             <Users className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.totalUsers}</div>
+            <div className="text-2xl font-bold">{users.length}</div>
             <p className="text-xs text-muted-foreground">
-              All registered users
+              Tutti gli utenti registrati
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Regular Users</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Utenti Regolari
+            </CardTitle>
             <UserIcon className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.regularUsers}</div>
-            <p className="text-xs text-muted-foreground">Standard accounts</p>
+            <div className="text-2xl font-bold">
+              {users.filter((u) => u.role === "user").length}
+            </div>
+            <p className="text-xs text-muted-foreground">Account standard</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">New This Week</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Nuovi Questa Settimana
+            </CardTitle>
             <UserPlus className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.recentUsers}</div>
-            <p className="text-xs text-muted-foreground">Recently joined</p>
+            <div className="text-2xl font-bold">
+              {
+                users.filter(
+                  (u) =>
+                    new Date(u.createdAt) >
+                    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+                ).length
+              }
+            </div>
+            <p className="text-xs text-muted-foreground">Appena iscritti</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Filters and Search */}
+      {/* Filtri e Ricerca */}
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Search by name or email..."
+                placeholder="Cerca per nome o email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -280,25 +289,23 @@ export default function UsersPage() {
             </div>
             <Select value={activityFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Filter by role" />
+                <SelectValue placeholder="Filtra per stato" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Users</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="banned">Blocked</SelectItem>
+                <SelectItem value="all">Tutti gli utenti</SelectItem>
+                <SelectItem value="active">Attivi</SelectItem>
+                <SelectItem value="banned">Bloccati</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </CardContent>
       </Card>
 
-      {/* Users Table */}
+      {/* Tabella Utenti */}
       <Card>
         <CardHeader>
-          <CardTitle>All Users</CardTitle>
-          <CardDescription>
-            {paginatedUsers.length} of {users.length} users
-          </CardDescription>
+          <CardTitle>Tutti gli Utenti</CardTitle>
+          <CardDescription>Elenco degli account registrati</CardDescription>
         </CardHeader>
         <CardContent>
           {paginatedUsers.length > 0 ? (
@@ -306,10 +313,10 @@ export default function UsersPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>User</TableHead>
-                    <TableHead>Joined</TableHead>
-                    <TableHead>Last Updated</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>Utente</TableHead>
+                    <TableHead>Registrato</TableHead>
+                    <TableHead>Ultimo Aggiornamento</TableHead>
+                    <TableHead>Azioni</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -406,247 +413,44 @@ export default function UsersPage() {
                   ))}
                 </TableBody>
               </Table>
-              <div className="flex justify-end mt-5">
-                <div className="flex justify-between items-center gap-4 mt-4 ml-auto">
-                  <Button
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                  >
-                    Previous
-                  </Button>
-                  <span>
-                    Page {currentPage} of {totalPages}
-                  </span>
-                  <Button
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                  >
-                    Next
-                  </Button>
-                </div>
-              </div>
             </div>
           ) : (
             <div className="text-center py-12">
               <Users className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No users found</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Nessun utente trovato
+              </h3>
               <p className="text-muted-foreground">
                 {searchTerm || activityFilter !== "all"
-                  ? "Try adjusting your search or filter criteria"
-                  : "No users are registered yet"}
+                  ? "Prova a modificare i criteri di ricerca o filtro"
+                  : "Nessun utente registrato finora"}
               </p>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Edit User Dialog */}
+      {/* Dialog Modifica Utente */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit User</DialogTitle>
+            <DialogTitle>Modifica Utente</DialogTitle>
             <DialogDescription>
-              Update user information and permissions
+              Aggiorna le informazioni e i permessi dell&apos;utente
             </DialogDescription>
           </DialogHeader>
-          <form
-            onSubmit={handleSubmitUpdate(onSubmitUpdate)}
-            className="space-y-4"
-          >
-            <div className="space-y-2">
-              <Label htmlFor="update-name">Full Name</Label>
-              <Input id="update-name" {...registerUpdate("name")} />
-              {errorsUpdate.name && (
-                <p className="text-sm text-red-600">
-                  {errorsUpdate.name.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="update-email">Email</Label>
-              <Input
-                id="update-email"
-                type="email"
-                {...registerUpdate("email")}
-              />
-              {errorsUpdate.email && (
-                <p className="text-sm text-red-600">
-                  {errorsUpdate.email.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="update-password">New Password (optional)</Label>
-              <Input
-                id="update-password"
-                type="password"
-                placeholder="Leave blank to keep current password"
-                {...registerUpdate("password")}
-              />
-              {errorsUpdate.password && (
-                <p className="text-sm text-red-600">
-                  {errorsUpdate.password.message}
-                </p>
-              )}
-            </div>
-
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1"
-                onClick={() => {
-                  setIsEditDialogOpen(false);
-                  resetUpdate();
-                  setSelectedUser(null);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                className="flex-1"
-                disabled={updateUser.isPending}
-              >
-                {updateUser.isPending ? "Updating..." : "Update User"}
-              </Button>
-            </div>
-          </form>
         </DialogContent>
       </Dialog>
 
-      {/* User Details Dialog */}
+      {/* Dialog Dettagli Utente */}
       <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>User Details</DialogTitle>
+            <DialogTitle>Dettagli Utente</DialogTitle>
             <DialogDescription>
-              Complete information for {selectedUser?.name}
+              Informazioni complete per {selectedUser?.name}
             </DialogDescription>
           </DialogHeader>
-          {selectedUser && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-600 font-bold text-xl">
-                  {selectedUser.name.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">{selectedUser.name}</h3>
-                  <p className="text-muted-foreground">{selectedUser.email}</p>
-                  <Badge
-                    variant={
-                      selectedUser.role === "admin" ? "default" : "secondary"
-                    }
-                    className="mt-1"
-                  >
-                    {selectedUser.role === "admin" ? (
-                      <>
-                        <Shield className="h-3 w-3 mr-1" />
-                        Administrator
-                      </>
-                    ) : (
-                      <>
-                        <UserIcon className="h-3 w-3 mr-1" />
-                        User
-                      </>
-                    )}
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h4 className="font-semibold mb-2">Account Information</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">User ID:</span>
-                      <span className="font-mono text-xs">
-                        {selectedUser._id}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Role:</span>
-                      <span className="font-medium capitalize">
-                        {selectedUser.role}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Status:</span>
-                      <Badge variant="default">Active</Badge>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-2">Timestamps</h4>
-                  <div className="space-y-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground block">
-                        Created:
-                      </span>
-                      <span className="font-medium">
-                        {format(new Date(selectedUser.createdAt), "PPpp")}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground block">
-                        Last Updated:
-                      </span>
-                      <span className="font-medium">
-                        {format(new Date(selectedUser.updatedAt), "PPpp")}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-2 pt-4 border-t">
-                <Button onClick={() => handleEditUser(selectedUser)}>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit User
-                </Button>
-                {selectedUser._id !== currentUser?._id && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button variant="destructive">
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Delete User
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete User</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to delete {selectedUser.name}?
-                          This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => {
-                            handleDeleteUser(selectedUser);
-                            setIsDetailsDialogOpen(false);
-                          }}
-                          className="bg-red-600 hover:bg-red-700"
-                        >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                )}
-                <Button
-                  variant="outline"
-                  onClick={() => setIsDetailsDialogOpen(false)}
-                >
-                  Close
-                </Button>
-              </div>
-            </div>
-          )}
         </DialogContent>
       </Dialog>
     </div>

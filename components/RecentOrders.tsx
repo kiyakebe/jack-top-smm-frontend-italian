@@ -19,8 +19,8 @@ const RecentOrders = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Orders</CardTitle>
-        <CardDescription>Your latest order activity</CardDescription>
+        <CardTitle>Ordini Recenti</CardTitle>
+        <CardDescription>Le tue ultime attività di ordine</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -33,8 +33,8 @@ const RecentOrders = () => {
           ) : recentOrders.length == 0 ? (
             <EmptyState
               icon={Package}
-              title="No Orders Available"
-              description="There are no Orders to display at the moment."
+              title="Nessun Ordine Disponibile"
+              description="Non ci sono ordini da mostrare al momento."
             />
           ) : recentOrders.length > 0 ? (
             recentOrders.map((order, index) => (
@@ -44,10 +44,10 @@ const RecentOrders = () => {
               >
                 <div className="space-y-1">
                   <p className="text-sm font-medium">
-                    Order #{order.topsmmOrderId}
+                    Ordine #{order.topsmmOrderId}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {order.quantity} units • ${order.price}
+                    {order.quantity} unità • ${order.price}
                   </p>
                 </div>
                 <Badge
@@ -67,7 +67,9 @@ const RecentOrders = () => {
               </div>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">No orders yet</p>
+            <p className="text-sm text-muted-foreground">
+              Nessun ordine ancora
+            </p>
           )}
         </div>
       </CardContent>

@@ -26,7 +26,6 @@ import {
   Package,
   ShoppingCart,
   Users,
-  // Settings,
   LogOut,
   ChevronUp,
 } from "lucide-react";
@@ -40,47 +39,41 @@ export function AppSidebar({ roleRoute }: AppSidebarProps) {
 
   const navigation = [
     {
-      title: "Dashboard",
+      title: "Cruscotto",
       url: `/${roleRoute}`,
       icon: LayoutDashboard,
       roles: ["dashboard", "admin"],
     },
     {
-      title: "Categories",
+      title: "Categorie",
       url: `/${roleRoute}/categories`,
       icon: Package,
       roles: ["admin"],
     },
     {
-      title: "Services",
+      title: "Servizi",
       url: `/${roleRoute}/services`,
       icon: Package,
       roles: ["dashboard", "admin"],
     },
     {
-      title: "Orders",
+      title: "Ordini",
       url: `/${roleRoute}/orders`,
       icon: ShoppingCart,
       roles: ["dashboard", "admin"],
     },
     {
-      title: "New Order",
+      title: "Nuovo Ordine",
       url: `/${roleRoute}/new-order`,
       icon: Users,
       roles: ["admin", "dashboard"],
     },
     {
-      title: "Users",
+      title: "Utenti",
       url: `/${roleRoute}/users`,
       icon: Users,
       roles: ["admin"],
     },
-    // {
-    //   title: "Settings",
-    //   url: `/${roleRoute}/settings`,
-    //   icon: Settings,
-    //   roles: ["dashboard", "admin"],
-    // },
   ];
 
   const filteredNavigation = navigation.filter((item) =>
@@ -99,7 +92,7 @@ export function AppSidebar({ roleRoute }: AppSidebarProps) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigazione</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {filteredNavigation.map((item) => (
@@ -137,7 +130,7 @@ export function AppSidebar({ roleRoute }: AppSidebarProps) {
               >
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="h-4 w-4 mr-2" />
-                  Sign out
+                  Esci
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

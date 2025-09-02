@@ -36,23 +36,23 @@ export default function DeleteServiceDialog({
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <Trash2 className="h-5 w-5 text-destructive" />
-            Delete Service
+            Elimina Servizio
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete{" "}
-            <span className="font-semibold">{service.name}</span>? This action
-            cannot be undone and will permanently remove the service from your
-            system.
+            Sei sicuro di voler eliminare{" "}
+            <span className="font-semibold">{service.name}</span>? Questa azione
+            non può essere annullata e rimuoverà permanentemente il servizio dal
+            sistema.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Annulla</AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             disabled={isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isPending ? "Deleting..." : "Delete Service"}
+            {isPending ? "Eliminazione..." : "Elimina Servizio"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

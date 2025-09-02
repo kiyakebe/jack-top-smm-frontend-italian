@@ -88,9 +88,9 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Categorie</h1>
           <p className="text-muted-foreground">
-            Manage service categories for your SMM panel
+            Gestisci le categorie di servizi per il tuo pannello SMM
           </p>
         </div>
         <Button
@@ -98,20 +98,20 @@ export default function CategoriesPage() {
           className="bg-blue-600 hover:bg-blue-700"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Category
+          Aggiungi Categoria
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>All Categories</CardTitle>
+          <CardTitle>Tutte le Categorie</CardTitle>
           <CardDescription>
-            A list of all categories in your system.
+            Un elenco di tutte le categorie nel tuo sistema.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="text-center py-8">Loading categories...</div>
+            <div className="text-center py-8">Caricamento categorie...</div>
           ) : (
             <CategoriesTable
               categories={categories || []}

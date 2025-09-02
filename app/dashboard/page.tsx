@@ -39,30 +39,30 @@ export default function DashboardPage() {
 
   const stats = [
     {
-      title: "Total Services",
+      title: "Totale Servizi",
       value: services.length,
-      description: "Available services",
+      description: "Servizi disponibili",
       icon: Package,
       color: "text-blue-600",
     },
     {
-      title: "Total Orders",
+      title: "Totale Ordini",
       value: orders.length,
-      description: "All time orders",
+      description: "Ordini totali",
       icon: ShoppingCart,
       color: "text-green-600",
     },
     {
-      title: "Completed Orders",
+      title: "Ordini Completati",
       value: orders.filter((order) => order.status === "completed").length,
-      description: "Successfully completed",
+      description: "Completati con successo",
       icon: TrendingUp,
       color: "text-purple-600",
     },
     {
-      title: "Pending Orders",
+      title: "Ordini in Attesa",
       value: orders.filter((order) => order.status === "pending").length,
-      description: "Awaiting processing",
+      description: "In attesa di elaborazione",
       icon: Users,
       color: "text-orange-600",
     },
@@ -75,14 +75,14 @@ export default function DashboardPage() {
       <section className="overflow-hidden rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 p-8 text-white">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold">Welcome back, {user?.name}!</h2>
+            <h2 className="text-3xl font-bold">Bentornato, {user?.name}!</h2>
             <p className="max-w-[600px] text-white/80">
-              Here&apos;s what&apos;s happening with your SMM panel today.
+              Ecco cosa sta succedendo oggi sul tuo pannello SMM.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/dashboard/new-order">
                 <Button className="rounded-2xl bg-white text-indigo-700 hover:bg-white/90">
-                  Create New Order
+                  Crea Nuovo Ordine
                 </Button>
               </Link>
               <Link href="/dashboard/orders">
@@ -90,7 +90,7 @@ export default function DashboardPage() {
                   variant="outline"
                   className="rounded-2xl bg-transparent border-white text-white hover:bg-white/10"
                 >
-                  Orders
+                  Ordini
                 </Button>
               </Link>
             </div>
@@ -129,8 +129,8 @@ export default function DashboardPage() {
       <div className="grid gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Recent Orders</CardTitle>
-            <CardDescription>Your latest order activity</CardDescription>
+            <CardTitle>Ordini Recenti</CardTitle>
+            <CardDescription>Le tue ultime attività di ordine</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -142,10 +142,10 @@ export default function DashboardPage() {
                   >
                     <div className="space-y-1">
                       <p className="text-sm font-medium">
-                        Order #{order.topsmmOrderId}
+                        Ordine #{order.topsmmOrderId}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {order.quantity} units • ${order.price}
+                        {order.quantity} unità • ${order.price}
                       </p>
                     </div>
                     <Badge
@@ -159,12 +159,20 @@ export default function DashboardPage() {
                           : "outline"
                       }
                     >
-                      {order.status}
+                      {order.status === "completed"
+                        ? "Completato"
+                        : order.status === "pending"
+                        ? "In Attesa"
+                        : order.status === "failed"
+                        ? "Fallito"
+                        : order.status}
                     </Badge>
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-muted-foreground">No orders yet</p>
+                <p className="text-sm text-muted-foreground">
+                  Nessun ordine ancora
+                </p>
               )}
             </div>
           </CardContent>

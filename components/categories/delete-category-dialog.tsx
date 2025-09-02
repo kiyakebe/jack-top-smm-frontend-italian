@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AlertDialog,
@@ -9,15 +9,15 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Category } from "@/types/api"
+} from "@/components/ui/alert-dialog";
+import { Category } from "@/types/api";
 
 interface DeleteCategoryDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  category: Category | null
-  onConfirm: () => void
-  isLoading?: boolean
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  category: Category | null;
+  onConfirm: () => void;
+  isLoading?: boolean;
 }
 
 export function DeleteCategoryDialog({
@@ -31,19 +31,25 @@ export function DeleteCategoryDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>Sei sicuro?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the category{" "}
-            <span className="font-semibold">&quot;{category?.name}&quot;</span> and remove it from all associated services.
+            Questa azione non può essere annullata. Verrà eliminata
+            permanentemente la categoria{" "}
+            <span className="font-semibold">&quot;{category?.name}&quot;</span>{" "}
+            e rimossa da tutti i servizi associati.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="bg-red-600 hover:bg-red-700">
-            {isLoading ? "Deleting..." : "Delete"}
+          <AlertDialogCancel disabled={isLoading}>Annulla</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onConfirm}
+            disabled={isLoading}
+            className="bg-red-600 hover:bg-red-700"
+          >
+            {isLoading ? "Eliminazione in corso..." : "Elimina"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

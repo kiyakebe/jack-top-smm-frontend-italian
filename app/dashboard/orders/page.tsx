@@ -1,10 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-  useOrders,
-  useRefillOrders,
-} from "@/hooks/use-orders";
+import { useOrders, useRefillOrders } from "@/hooks/use-orders";
 import { useServices } from "@/hooks/use-services";
 import {
   Card,
@@ -49,31 +46,31 @@ import { format } from "@/lib/date-utils";
 
 const statusConfig = {
   pending: {
-    label: "Pending",
+    label: "In Attesa",
     variant: "secondary" as const,
     icon: Clock,
     color: "text-orange-600",
   },
   "in progress": {
-    label: "In Progress",
+    label: "In Corso",
     variant: "default" as const,
     icon: TrendingUp,
     color: "text-blue-600",
   },
   completed: {
-    label: "Completed",
+    label: "Completato",
     variant: "default" as const,
     icon: CheckCircle,
     color: "text-green-600",
   },
   partial: {
-    label: "Partial",
+    label: "Parziale",
     variant: "outline" as const,
     icon: AlertCircle,
     color: "text-yellow-600",
   },
   failed: {
-    label: "Failed",
+    label: "Fallito",
     variant: "destructive" as const,
     icon: XCircle,
     color: "text-red-600",
@@ -83,15 +80,11 @@ const statusConfig = {
 export default function OrdersPage() {
   const { data: orders = [], isLoading } = useOrders();
   const { data: services = [] } = useServices();
-
-  console.log(orders);
-
   const refillOrders = useRefillOrders();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  // Create a map of services for quick lookup
   const servicesMap = useMemo(() => {
     return services.reduce((acc, service) => {
       acc[service.service] = service;
@@ -99,21 +92,17 @@ export default function OrdersPage() {
     }, {} as Record<number, (typeof services)[0]>);
   }, [services]);
 
-  // Filter orders based on search and status
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
       const matchesSearch =
         order.topsmmOrderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.link.toLowerCase().includes(searchTerm.toLowerCase());
-
       const matchesStatus =
         statusFilter === "all" || order.status === statusFilter;
-
       return matchesSearch && matchesStatus;
     });
   }, [orders, searchTerm, statusFilter]);
 
-  // Calculate statistics
   const stats = useMemo(() => {
     const totalOrders = orders.length;
     const completedOrders = orders.filter(
@@ -125,7 +114,6 @@ export default function OrdersPage() {
     const pendingOrders = orders.filter(
       (order) => order.status === "pending"
     ).length;
-
     return {
       totalOrders,
       completedOrders,
@@ -135,7 +123,7 @@ export default function OrdersPage() {
   }, [orders]);
 
   const getServiceName = (serviceId: number) => {
-    return servicesMap[serviceId]?.name || `Service #${serviceId}`;
+    return servicesMap[serviceId]?.name || `Servizio #${serviceId}`;
   };
 
   if (isLoading) {
@@ -160,9 +148,9 @@ export default function OrdersPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Ordini</h1>
         <p className="text-muted-foreground">
-          Manage and track your SMM orders
+          Gestisci e monitora i tuoi ordini SMM
         </p>
       </div>
 
@@ -170,50 +158,48 @@ export default function OrdersPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+            <CardTitle className="text-sm font-medium">Totale Ordini</CardTitle>
             <ShoppingCart className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalOrders}</div>
-            <p className="text-xs text-muted-foreground">All time orders</p>
+            <p className="text-xs text-muted-foreground">Ordini totali</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">Completati</CardTitle>
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.completedOrders}</div>
             <p className="text-xs text-muted-foreground">
-              Successfully completed
+              Completati con successo
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CardTitle className="text-sm font-medium">In Attesa</CardTitle>
+            <Clock className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.pendingOrders}</div>
-            <p className="text-xs text-muted-foreground">
-              Pending Orders
-            </p>
+            <p className="text-xs text-muted-foreground">Ordini in attesa</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+            <CardTitle className="text-sm font-medium">In Corso</CardTitle>
             <TrendingUp className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.inProgressOrders}</div>
             <p className="text-xs text-muted-foreground">
-              Currently processing
+              Attualmente in elaborazione
             </p>
           </CardContent>
         </Card>
@@ -226,7 +212,7 @@ export default function OrdersPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Search by order ID or link..."
+                placeholder="Cerca per ID ordine o link..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -235,15 +221,15 @@ export default function OrdersPage() {
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-48">
                 <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder="Filtra per stato" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="in progress">In Progress</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="partial">Partial</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="all">Tutti gli stati</SelectItem>
+                <SelectItem value="pending">In Attesa</SelectItem>
+                <SelectItem value="in progress">In Corso</SelectItem>
+                <SelectItem value="completed">Completato</SelectItem>
+                <SelectItem value="partial">Parziale</SelectItem>
+                <SelectItem value="failed">Fallito</SelectItem>
               </SelectContent>
             </Select>
             {(searchTerm || statusFilter !== "all") && (
@@ -255,7 +241,7 @@ export default function OrdersPage() {
                 }}
               >
                 <X className="h-4 w-4 mr-2" />
-                Clear
+                Pulisci
               </Button>
             )}
           </div>
@@ -265,9 +251,9 @@ export default function OrdersPage() {
       {/* Orders Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Order History</CardTitle>
+          <CardTitle>Storico Ordini</CardTitle>
           <CardDescription>
-            {filteredOrders.length} of {orders.length} orders
+            {filteredOrders.length} di {orders.length} ordini
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -275,14 +261,13 @@ export default function OrdersPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Service</TableHead>
+                  <TableHead>ID Ordine</TableHead>
+                  <TableHead>Servizio</TableHead>
                   <TableHead>Target</TableHead>
-                  <TableHead>Quantity</TableHead>
-                  {/* <TableHead>Price</TableHead> */}
-                  <TableHead>Status</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Quantità</TableHead>
+                  <TableHead>Stato</TableHead>
+                  <TableHead>Creato il</TableHead>
+                  <TableHead>Azioni</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -296,9 +281,6 @@ export default function OrdersPage() {
                       <TableCell>
                         <div>
                           <p className="font-medium">#{order.topsmmOrderId}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {/* {order.id.slice(0, 8)}... */}
-                          </p>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -329,11 +311,6 @@ export default function OrdersPage() {
                           {order.quantity.toLocaleString()}
                         </span>
                       </TableCell>
-                      {/* <TableCell>
-                        <span className="font-medium">
-                          {order.price}
-                        </span>
-                      </TableCell> */}
                       <TableCell>
                         <Badge
                           variant={
@@ -347,7 +324,7 @@ export default function OrdersPage() {
                       <TableCell>
                         <div className="text-sm">
                           <p>
-                            {format(new Date(order.createdAt), "MMM dd, yyyy")}
+                            {format(new Date(order.createdAt), "dd MMM, yyyy")}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             {format(new Date(order.createdAt), "HH:mm")}
@@ -376,11 +353,13 @@ export default function OrdersPage() {
           ) : (
             <div className="text-center py-12">
               <Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No orders found</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Nessun ordine trovato
+              </h3>
               <p className="text-muted-foreground">
                 {searchTerm || statusFilter !== "all"
-                  ? "Try adjusting your search or filter criteria"
-                  : "You haven't placed any orders yet"}
+                  ? "Prova a modificare i criteri di ricerca o filtro"
+                  : "Non hai ancora effettuato ordini"}
               </p>
             </div>
           )}

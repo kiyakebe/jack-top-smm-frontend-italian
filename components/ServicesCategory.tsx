@@ -21,8 +21,8 @@ function BestServicesList({ services }: BestServicesProps) {
     return (
       <EmptyState
         icon={Package}
-        title="No Services Available"
-        description="There are no services to display at the moment"
+        title="Nessun Servizio Disponibile"
+        description="Non ci sono servizi da mostrare al momento"
       />
     );
   }
@@ -44,7 +44,7 @@ function BestServicesList({ services }: BestServicesProps) {
         >
           <p className="text-sm font-medium">{category}</p>
           <Badge className="p-2 px-3 rounded-lg" variant="outline">
-            {count} services
+            {count} servizi
           </Badge>
         </div>
       ))}
@@ -59,8 +59,10 @@ export default function BestServicesCard() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Services Category</CardTitle>
-        <CardDescription>Services count based on category</CardDescription>
+        <CardTitle>Categorie di Servizi</CardTitle>
+        <CardDescription>
+          Conteggio servizi in base alla categoria
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {isServiceLoading ? (
@@ -72,8 +74,8 @@ export default function BestServicesCard() {
         ) : services.length == 0 ? (
           <EmptyState
             icon={Package}
-            title="Services Available"
-            description="There are no services to display at the moment."
+            title="Servizi Disponibili"
+            description="Non ci sono servizi da mostrare al momento."
           />
         ) : (
           <BestServicesList services={bestServices} />

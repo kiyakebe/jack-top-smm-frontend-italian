@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
@@ -35,24 +37,26 @@ import {
 
 // Define the schema using zod
 const serviceSchema = z.object({
-  serviceName: z.string().min(1, "Service name is required"),
-  newServiceName: z.string().min(1, "New service name is required"),
-  rate: z.number().min(0, "Rate is required"),
-  category: z.string().min(1, "Category is required"),
+  serviceName: z.string().min(1, "Il nome del servizio è obbligatorio"),
+  newServiceName: z
+    .string()
+    .min(1, "Il nome del nuovo servizio è obbligatorio"),
+  rate: z.number().min(0, "Il prezzo è obbligatorio"),
+  category: z.string().min(1, "La categoria è obbligatoria"),
   min: z
     .string()
-    .min(1, "Minimum quantity is required")
-    .regex(/^\d+$/, "Must be a valid number"),
+    .min(1, "La quantità minima è obbligatoria")
+    .regex(/^\d+$/, "Deve essere un numero valido"),
   max: z
     .string()
-    .min(1, "Maximum quantity is required")
-    .regex(/^\d+$/, "Must be a valid number"),
-  type: z.string().min(1, "Type is required"),
+    .min(1, "La quantità massima è obbligatoria")
+    .regex(/^\d+$/, "Deve essere un numero valido"),
+  type: z.string().min(1, "Il tipo è obbligatorio"),
   dripfeed: z.boolean(),
   refill: z.boolean(),
   cancel: z.boolean(),
   isActive: z.boolean(),
-  isFree: z.boolean(), // Added isFree to the schema
+  isFree: z.boolean(),
 });
 
 type ServiceFormData = z.infer<typeof serviceSchema>;
@@ -69,7 +73,6 @@ const AddService = () => {
     console.log(JSON.stringify(selectedOriginal, null, 2));
   }, [selectedOriginal]);
 
-  // Initialize react-hook-form
   const form = useForm<ServiceFormData>({
     resolver: zodResolver(serviceSchema),
     defaultValues: {
@@ -88,7 +91,6 @@ const AddService = () => {
     },
   });
 
-  // Filtered options for autocomplete
   const filteredOptions = form.watch("serviceName")
     ? originalServices.filter((os) =>
         os.name.toLowerCase().includes(form.watch("serviceName").toLowerCase())
@@ -108,8 +110,6 @@ const AddService = () => {
   };
 
   const handleCreateService = async (data: ServiceFormData) => {
-    // Find the selected original service by name
-    // const os = originalServices.find((s) => s.name === data.serviceName);
     if (!selectedOriginal) return;
     const serviceData = {
       type: data.type,
@@ -128,7 +128,7 @@ const AddService = () => {
         category: selectedOriginal.category,
       },
       isActive: data.isActive,
-      isFree: data.isFree, // Added isFree to the serviceData
+      isFree: data.isFree,
     };
     await createService.mutateAsync(serviceData);
     setIsCreateDialogOpen(false);
@@ -141,14 +141,14 @@ const AddService = () => {
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Add Service
+          Aggiungi Servizio
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>Create New Service</DialogTitle>
+          <DialogTitle>Crea Nuovo Servizio</DialogTitle>
           <DialogDescription>
-            Add a new service to the platform
+            Aggiungi un nuovo servizio alla piattaforma
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -156,13 +156,12 @@ const AddService = () => {
             onSubmit={form.handleSubmit(handleCreateService)}
             className="space-y-4"
           >
-            {/* Service Name Autocomplete */}
             <FormField
               control={form.control}
               name="serviceName"
               render={({ field }) => (
                 <FormItem className="relative">
-                  <FormLabel>Original Service</FormLabel>
+                  <FormLabel>Servizio Originale</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -198,13 +197,12 @@ const AddService = () => {
                 </FormItem>
               )}
             />
-            {/* New Service Name Field */}
             <FormField
               control={form.control}
               name="newServiceName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Service Name</FormLabel>
+                  <FormLabel>Nome Nuovo Servizio</FormLabel>
                   <FormControl>
                     <Input {...field} autoComplete="off" />
                   </FormControl>
@@ -218,7 +216,7 @@ const AddService = () => {
                 name="rate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rate</FormLabel>
+                    <FormLabel>Prezzo</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -234,7 +232,8 @@ const AddService = () => {
                     <FormMessage />
                     {form.watch("isFree") && (
                       <p className="text-xs text-blue-600 mt-1">
-                        Rate automatically set to 0 for free services
+                        Il prezzo viene impostato automaticamente a 0 per i
+                        servizi gratuiti
                       </p>
                     )}
                   </FormItem>
@@ -245,11 +244,11 @@ const AddService = () => {
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel>Categoria</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a category" />
+                          <SelectValue placeholder="Seleziona una categoria" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -271,7 +270,7 @@ const AddService = () => {
                 name="min"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Minimum Quantity</FormLabel>
+                    <FormLabel>Quantità Minima</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -285,7 +284,7 @@ const AddService = () => {
                     <FormMessage />
                     {selectedOriginal && (
                       <p className="text-xs text-gray-500 mt-1">
-                        Original: {selectedOriginal.min}
+                        Originale: {selectedOriginal.min}
                       </p>
                     )}
                   </FormItem>
@@ -296,7 +295,7 @@ const AddService = () => {
                 name="max"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Maximum Quantity</FormLabel>
+                    <FormLabel>Quantità Massima</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -310,7 +309,7 @@ const AddService = () => {
                     <FormMessage />
                     {selectedOriginal && (
                       <p className="text-xs text-gray-500 mt-1">
-                        Original: {selectedOriginal.max}
+                        Originale: {selectedOriginal.max}
                       </p>
                     )}
                   </FormItem>
@@ -328,14 +327,11 @@ const AddService = () => {
                         checked={field.value}
                         onCheckedChange={(checked) => {
                           field.onChange(checked);
-                          // If service is set to free, automatically set rate to 0
-                          if (checked) {
-                            form.setValue("rate", 0);
-                          }
+                          if (checked) form.setValue("rate", 0);
                         }}
                       />
                     </FormControl>
-                    <FormLabel>Free</FormLabel>
+                    <FormLabel>Gratuito</FormLabel>
                   </FormItem>
                 )}
               />
@@ -351,7 +347,7 @@ const AddService = () => {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel>Active</FormLabel>
+                  <FormLabel>Attivo</FormLabel>
                 </FormItem>
               )}
             />
@@ -360,7 +356,7 @@ const AddService = () => {
               className="w-full"
               disabled={createService.isPending}
             >
-              Create Service
+              Crea Servizio
             </Button>
           </form>
         </Form>

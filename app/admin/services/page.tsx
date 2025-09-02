@@ -91,7 +91,7 @@ export default function ServicesPage() {
         setIsDeleteDialogOpen(false);
         setServiceToDelete(null);
       } catch (error) {
-        console.error("Failed to delete service:", error);
+        console.error("Impossibile eliminare il servizio:", error);
       }
     }
   };
@@ -118,8 +118,8 @@ export default function ServicesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Services</h1>
-          <p className="text-muted-foreground">Browse and order SMM services</p>
+          <h1 className="text-3xl font-bold tracking-tight">Servizi</h1>
+          <p className="text-muted-foreground">Sfoglia e ordina servizi SMM</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center border rounded-lg p-1">
@@ -142,14 +142,14 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filtri */}
       <Card>
         <CardContent className="pt-6">
           <div className="flex items-center space-x-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Search services..."
+                placeholder="Cerca servizi..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -160,14 +160,14 @@ export default function ServicesPage() {
               onValueChange={setSelectedCategory}
             >
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="All Categories" />
+                <SelectValue placeholder="Tutte le categorie" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">Tutte le categorie</SelectItem>
                 {isCategoryLoading ? (
-                  <p className="p-2 text-sm">Loading...</p>
+                  <p className="p-2 text-sm">Caricamento...</p>
                 ) : !categories || categories?.length == 0 ? (
-                  <p className="p-2 text-sm">No Category Available</p>
+                  <p className="p-2 text-sm">Nessuna categoria disponibile</p>
                 ) : (
                   categories.map((category, index) => (
                     <SelectItem key={index} value={category._id}>
@@ -185,17 +185,19 @@ export default function ServicesPage() {
         <Card>
           <CardContent className="text-center py-12">
             <Package className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No services found</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Nessun servizio trovato
+            </h3>
             <p className="text-muted-foreground">
               {searchTerm || selectedCategory !== "all"
-                ? "Try adjusting your search or filter criteria"
-                : "No services are currently available"}
+                ? "Prova a modificare i criteri di ricerca o filtro"
+                : "Nessun servizio attualmente disponibile"}
             </p>
           </CardContent>
         </Card>
       )}
 
-      {/* Services Display */}
+      {/* Visualizzazione Servizi */}
       {viewMode === "grid" ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredServices.map((service, index) => (
@@ -204,7 +206,6 @@ export default function ServicesPage() {
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
                     <CardTitle className="text-lg">{service.name}</CardTitle>
-                    {/* <Badge variant="outline">{service.category}</Badge> */}
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold text-blue-600">
@@ -231,12 +232,12 @@ export default function ServicesPage() {
                     )}
                     {service.refill && (
                       <Badge variant="secondary" className="text-xs">
-                        Refill
+                        Ricarica
                       </Badge>
                     )}
                     {service.cancel && (
                       <Badge variant="secondary" className="text-xs">
-                        Cancel
+                        Annulla
                       </Badge>
                     )}
                   </div>
@@ -247,7 +248,7 @@ export default function ServicesPage() {
                       onClick={() => handleOrderService(service)}
                     >
                       <ShoppingCart className="mr-2 h-4 w-4" />
-                      Order Now
+                      Ordina ora
                     </Button>
                     <Button
                       variant="outline"
@@ -266,21 +267,21 @@ export default function ServicesPage() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>All Services</CardTitle>
+            <CardTitle>Tutti i servizi</CardTitle>
             <CardDescription>
-              Complete list of available services
+              Elenco completo dei servizi disponibili
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Service</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Rate</TableHead>
+                  <TableHead>Servizio</TableHead>
+                  <TableHead>Categoria</TableHead>
+                  <TableHead>Prezzo</TableHead>
                   <TableHead>Min/Max</TableHead>
-                  <TableHead>Features</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>Funzionalità</TableHead>
+                  <TableHead>Azioni</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -298,7 +299,7 @@ export default function ServicesPage() {
                       <Badge variant="outline">
                         {service.category
                           ? service.category.name
-                          : "No Category"}
+                          : "Nessuna categoria"}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-semibold text-blue-600">
@@ -316,12 +317,12 @@ export default function ServicesPage() {
                         )}
                         {service.refill && (
                           <Badge variant="secondary" className="text-xs">
-                            Refill
+                            Ricarica
                           </Badge>
                         )}
                         {service.cancel && (
                           <Badge variant="secondary" className="text-xs">
-                            Cancel
+                            Annulla
                           </Badge>
                         )}
                       </div>
@@ -333,7 +334,7 @@ export default function ServicesPage() {
                           onClick={() => handleOrderService(service)}
                         >
                           <ShoppingCart className="h-4 w-4 mr-1" />
-                          Order
+                          Ordina
                         </Button>
                         <Button
                           variant="outline"
@@ -353,14 +354,14 @@ export default function ServicesPage() {
         </Card>
       )}
 
-      {/* Order Dialog */}
+      {/* Dialog Ordine */}
       <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Create Order</DialogTitle>
+            <DialogTitle>Crea ordine</DialogTitle>
             <DialogDescription>
               {selectedService &&
-                `Order ${selectedService.name} - $${selectedService.rate} per 1000`}
+                `Ordina ${selectedService.name} - $${selectedService.rate} per 1000`}
             </DialogDescription>
           </DialogHeader>
           {selectedService && (
@@ -378,7 +379,7 @@ export default function ServicesPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Service Confirmation Dialog */}
+      {/* Dialog conferma eliminazione servizio */}
       <DeleteServiceDialog
         service={serviceToDelete}
         isOpen={isDeleteDialogOpen}

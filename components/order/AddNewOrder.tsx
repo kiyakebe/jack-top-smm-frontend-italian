@@ -18,18 +18,6 @@ import { CreateOrderFormValues, createOrderSchema } from "@/schemas/order";
 import { useCreateOrder } from "@/hooks/use-orders";
 import { useEffect } from "react";
 
-// const orderTypeOptions = [
-//   { value: "default", label: "Default Order" },
-//   { value: "package", label: "Package Order" },
-//   { value: "custom_comments", label: "Custom Comments" },
-//   { value: "mentions_with_hashtags", label: "Mentions with Hashtags" },
-//   { value: "mentions_hashtag", label: "Mentions Hashtag" },
-//   { value: "subscriptions", label: "Subscriptions" },
-//   { value: "comment_likes", label: "Comment Likes" },
-//   { value: "poll", label: "Poll" },
-//   { value: "comment_replies", label: "Comment Replies" },
-// ];
-
 interface AddNewOrderFormProps {
   serviceId: string;
   min: number;
@@ -143,14 +131,7 @@ export default function AddNewOrderForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Conditional Fields Based on Order Type */}
-        {(selectedType === "default" ||
-          selectedType === "package" ||
-          selectedType === "custom_comments" ||
-          selectedType === "mentions_with_hashtags" ||
-          selectedType === "mentions_hashtag" ||
-          selectedType === "comment_likes" ||
-          selectedType === "poll" ||
-          selectedType === "comment_replies") && (
+        {selectedType === "default" && (
           <FormField
             control={form.control}
             name="link"
@@ -178,11 +159,7 @@ export default function AddNewOrderForm({
             )}
           />
         )}
-        {(selectedType === "default" ||
-          selectedType === "mentions_with_hashtags" ||
-          selectedType === "mentions_hashtag" ||
-          selectedType === "comment_likes" ||
-          selectedType === "poll") && (
+        {selectedType === "default" && (
           <FormField
             control={form.control}
             name="quantity"
@@ -255,256 +232,7 @@ export default function AddNewOrderForm({
             />
           </div>
         )}
-        {(selectedType === "custom_comments" ||
-          selectedType === "comment_replies") && (
-          <FormField
-            control={form.control}
-            name="comments"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Comments</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Enter your comments here..."
-                    className="min-h-[100px]"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        {selectedType === "mentions_with_hashtags" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="usernames"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Usernames</FormLabel>
-                  <FormControl>
-                    <Input placeholder="@user1, @user2" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Comma-separated list of usernames
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="hashtags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Hashtags</FormLabel>
-                  <FormControl>
-                    <Input placeholder="#tag1, #tag2" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Comma-separated list of hashtags
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        )}
-        {selectedType === "mentions_hashtag" && (
-          <FormField
-            control={form.control}
-            name="hashtag"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Hashtag</FormLabel>
-                <FormControl>
-                  <Input placeholder="#hashtag" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        {selectedType === "subscriptions" && (
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="@username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="min"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Minimum</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(Number.parseInt(e.target.value) || 0)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="max"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Maximum</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(Number.parseInt(e.target.value) || 0)
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="delay"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Delay (minutes)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        max={600}
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(Number.parseInt(e.target.value) || 0)
-                        }
-                      />
-                    </FormControl>
-                    <FormDescription>0-600 minutes</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <FormField
-                control={form.control}
-                name="posts"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Posts (Optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            Number.parseInt(e.target.value) || undefined
-                          )
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="old_posts"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Old Posts (Optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        value={field.value ?? ""}
-                        onChange={(e) =>
-                          field.onChange(
-                            Number.parseInt(e.target.value) || undefined
-                          )
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="expiry"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Expiry (Optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="dd/mm/yyyy" {...field} />
-                    </FormControl>
-                    <FormDescription>Format: dd/mm/yyyy</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-        )}
-        {(selectedType === "comment_likes" ||
-          selectedType === "comment_replies") && (
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="@username" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        {selectedType === "poll" && (
-          <FormField
-            control={form.control}
-            name="answer_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Answer Number</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    {...field}
-                    value={field.value ?? ""}
-                    onChange={(e) =>
-                      field.onChange(Number.parseInt(e.target.value) || 0)
-                    }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+        
         <Button
           type="submit"
           className="w-full"

@@ -36,7 +36,6 @@ export default function AddNewOrderWithService() {
     },
   });
 
-  // Clear root error when the form is unmounted (modal closed)
   React.useEffect(() => {
     return () => {
       form.clearErrors("root");
@@ -60,7 +59,7 @@ export default function AddNewOrderWithService() {
       console.log(error);
       form.setError("root", {
         type: "manual",
-        message: "Failed to create order",
+        message: "Creazione ordine fallita",
       });
     }
   }
@@ -73,11 +72,10 @@ export default function AddNewOrderWithService() {
           name="serviceId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Service</FormLabel>
+              <FormLabel>Servizio</FormLabel>
               <Select
                 onValueChange={(value) => {
                   field.onChange(value ? value : "");
-                  // Reset quantity when service changes to avoid invalid values
                   form.setValue("quantity", 0);
                 }}
                 value={field.value?.toString() || ""}
@@ -87,7 +85,7 @@ export default function AddNewOrderWithService() {
                   <SelectTrigger>
                     <SelectValue
                       placeholder={
-                        isLoading ? "Loading services..." : "Select a service"
+                        isLoading ? "Caricamento servizi..." : "Seleziona un servizio"
                       }
                     />
                   </SelectTrigger>
@@ -95,7 +93,7 @@ export default function AddNewOrderWithService() {
                 <SelectContent>
                   {services.map((service, index) => (
                     <SelectItem key={index} value={service._id}>
-                      {`${service.name} (Rate: ${service.rate})`}
+                      {`${service.name} (Tariffa: ${service.rate})`}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -118,10 +116,10 @@ export default function AddNewOrderWithService() {
             name="link"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{isFree ? "Username" : "Link"}</FormLabel>
+                <FormLabel>{isFree ? "Nome utente" : "Link"}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={isFree ? "username" : "https://example.com"}
+                    placeholder={isFree ? "nomeutente" : "https://esempio.com"}
                     {...field}
                     value={field.value ?? ""}
                   />
@@ -131,42 +129,44 @@ export default function AddNewOrderWithService() {
             )}
           />
         )}
+
         {(selectedType === "default" ||
           selectedType === "mentions_with_hashtags" ||
           selectedType === "mentions_hashtag" ||
           selectedType === "comment_likes" ||
           selectedType === "poll") && (
-          <>
-            <FormField
-              control={form.control}
-              name="quantity"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Quantity (Min: {selectedService?.min} and Max: {selectedService?.max})</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder={
-                        selectedService
-                          ? `Min: ${selectedService.min} and Max ${selectedService.max}`
-                          : "Select a service first"
-                      }
-                      min={selectedService?.min}
-                      max={selectedService?.max}
-                      disabled={!selectedService}
-                      {...field}
-                      value={field.value ?? ""}
-                      onChange={(e) =>
-                        field.onChange(Number.parseInt(e.target.value) || 0)
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </>
+          <FormField
+            control={form.control}
+            name="quantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Quantità (Min: {selectedService?.min} e Max: {selectedService?.max})
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder={
+                      selectedService
+                        ? `Min: ${selectedService.min} e Max ${selectedService.max}`
+                        : "Seleziona prima un servizio"
+                    }
+                    min={selectedService?.min}
+                    max={selectedService?.max}
+                    disabled={!selectedService}
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(Number.parseInt(e.target.value) || 0)
+                    }
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         )}
+
         {selectedType === "default" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
@@ -174,7 +174,7 @@ export default function AddNewOrderWithService() {
               name="runs"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Runs (Optional)</FormLabel>
+                  <FormLabel>Esecuzioni (Opzionale)</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -196,7 +196,7 @@ export default function AddNewOrderWithService() {
               name="interval"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Interval</FormLabel>
+                  <FormLabel>Intervallo</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -213,6 +213,7 @@ export default function AddNewOrderWithService() {
             />
           </div>
         )}
+
         {(selectedType === "custom_comments" ||
           selectedType === "comment_replies") && (
           <FormField
@@ -220,10 +221,10 @@ export default function AddNewOrderWithService() {
             name="comments"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Comments</FormLabel>
+                <FormLabel>Commenti</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter your comments here..."
+                    placeholder="Inserisci i tuoi commenti qui..."
                     className="min-h-[100px]"
                     {...field}
                   />
@@ -233,6 +234,7 @@ export default function AddNewOrderWithService() {
             )}
           />
         )}
+
         {selectedType === "mentions_with_hashtags" && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
@@ -240,12 +242,12 @@ export default function AddNewOrderWithService() {
               name="usernames"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Usernames</FormLabel>
+                  <FormLabel>Nomi utente</FormLabel>
                   <FormControl>
-                    <Input placeholder="@user1, @user2" {...field} />
+                    <Input placeholder="@utente1, @utente2" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Comma-separated list of usernames
+                    Elenco di nomi utente separati da virgola
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -256,12 +258,12 @@ export default function AddNewOrderWithService() {
               name="hashtags"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hashtags</FormLabel>
+                  <FormLabel>Hashtag</FormLabel>
                   <FormControl>
                     <Input placeholder="#tag1, #tag2" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Comma-separated list of hashtags
+                    Elenco di hashtag separati da virgola
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -269,6 +271,7 @@ export default function AddNewOrderWithService() {
             />
           </div>
         )}
+
         {selectedType === "mentions_hashtag" && (
           <FormField
             control={form.control}
@@ -284,6 +287,7 @@ export default function AddNewOrderWithService() {
             )}
           />
         )}
+
         {selectedType === "subscriptions" && (
           <div className="space-y-4">
             <FormField
@@ -291,9 +295,9 @@ export default function AddNewOrderWithService() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Nome utente</FormLabel>
                   <FormControl>
-                    <Input placeholder="@username" {...field} />
+                    <Input placeholder="@nomeutente" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -305,7 +309,7 @@ export default function AddNewOrderWithService() {
                 name="min"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Minimum</FormLabel>
+                    <FormLabel>Minimo</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -325,7 +329,7 @@ export default function AddNewOrderWithService() {
                 name="max"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Maximum</FormLabel>
+                    <FormLabel>Massimo</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -345,7 +349,7 @@ export default function AddNewOrderWithService() {
                 name="delay"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Delay (minutes)</FormLabel>
+                    <FormLabel>Ritardo (minuti)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -357,7 +361,7 @@ export default function AddNewOrderWithService() {
                         }
                       />
                     </FormControl>
-                    <FormDescription>0-600 minutes</FormDescription>
+                    <FormDescription>0-600 minuti</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -369,7 +373,7 @@ export default function AddNewOrderWithService() {
                 name="posts"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Posts (Optional)</FormLabel>
+                    <FormLabel>Post (Opzionale)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -391,7 +395,7 @@ export default function AddNewOrderWithService() {
                 name="old_posts"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Old Posts (Optional)</FormLabel>
+                    <FormLabel>Post vecchi (Opzionale)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -413,11 +417,11 @@ export default function AddNewOrderWithService() {
                 name="expiry"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Expiry (Optional)</FormLabel>
+                    <FormLabel>Scadenza (Opzionale)</FormLabel>
                     <FormControl>
-                      <Input placeholder="dd/mm/yyyy" {...field} />
+                      <Input placeholder="gg/mm/aaaa" {...field} />
                     </FormControl>
-                    <FormDescription>Format: dd/mm/yyyy</FormDescription>
+                    <FormDescription>Formato: gg/mm/aaaa</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -425,6 +429,7 @@ export default function AddNewOrderWithService() {
             </div>
           </div>
         )}
+
         {(selectedType === "comment_likes" ||
           selectedType === "comment_replies") && (
           <FormField
@@ -432,22 +437,23 @@ export default function AddNewOrderWithService() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Nome utente</FormLabel>
                 <FormControl>
-                  <Input placeholder="@username" {...field} />
+                  <Input placeholder="@nomeutente" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         )}
+
         {selectedType === "poll" && (
           <FormField
             control={form.control}
             name="answer_number"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Answer Number</FormLabel>
+                <FormLabel>Numero di risposte</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -463,12 +469,13 @@ export default function AddNewOrderWithService() {
             )}
           />
         )}
+
         <Button
           type="submit"
           className="w-full"
           disabled={createOrder.isPending || isLoading || !selectedService}
         >
-          {createOrder.isPending ? "Creating Order" : "Create Order"}
+          {createOrder.isPending ? "Creazione ordine..." : "Crea ordine"}
         </Button>
       </form>
     </Form>

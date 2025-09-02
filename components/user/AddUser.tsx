@@ -43,20 +43,22 @@ const AddUser = () => {
       <DialogTrigger asChild>
         <Button>
           <UserPlus className="mr-2 h-4 w-4" />
-          Add User
+          Aggiungi Utente
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create New User</DialogTitle>
-          <DialogDescription>Add a new user to the platform</DialogDescription>
+          <DialogTitle>Crea Nuovo Utente</DialogTitle>
+          <DialogDescription>
+            Aggiungi un nuovo utente alla piattaforma
+          </DialogDescription>
         </DialogHeader>
         <form
           onSubmit={handleSubmitCreate(onSubmitCreate)}
           className="space-y-4"
         >
           <div className="space-y-2">
-            <Label htmlFor="create-name">Full Name</Label>
+            <Label htmlFor="create-name">Nome Completo</Label>
             <Input id="create-name" {...registerCreate("name")} />
             {errorsCreate.name && (
               <p className="text-sm text-red-600">
@@ -103,14 +105,14 @@ const AddUser = () => {
                 resetCreate();
               }}
             >
-              Cancel
+              Annulla
             </Button>
             <Button
               type="submit"
               className="flex-1"
               disabled={createUser.isPending}
             >
-              {createUser.isPending ? "Creating..." : "Create User"}
+              {createUser.isPending ? "Creazione in corso..." : "Crea Utente"}
             </Button>
           </div>
         </form>

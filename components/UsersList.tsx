@@ -34,7 +34,7 @@ const UsersList = () => {
 
   return (
     <div className="p-4 rounded-lg border mb-10">
-      <h2 className="text-2xl font-bold mb-4">Users List</h2>
+      <h2 className="text-2xl font-bold mb-4">Elenco Utenti</h2>
       {isLoading ? (
         <div className="space-y-2">
           {[...Array(5)].map((_, i) => (
@@ -44,18 +44,18 @@ const UsersList = () => {
       ) : paginatedUsers.length === 0 ? (
         <EmptyState
           icon={Users}
-          title="No users are registered yet"
-          description="There are no Users to display at the moment."
+          title="Nessun utente registrato"
+          description="Non ci sono utenti da mostrare al momento."
         />
       ) : (
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
+                <TableHead>Nome</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Updated At</TableHead>
-                <TableHead className="w-[100px]">Status</TableHead>
+                <TableHead>Aggiornato il</TableHead>
+                <TableHead className="w-[100px]">Stato</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -64,9 +64,9 @@ const UsersList = () => {
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    {format(new Date(user.updatedAt), "MMM dd, yyyy")}
+                    {format(new Date(user.updatedAt), "dd MMM, yyyy")}
                   </TableCell>
-                  <TableCell>{user.isBanned ? "Banned" : "Active"}</TableCell>
+                  <TableCell>{user.isBanned ? "Bloccato" : "Attivo"}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -74,16 +74,16 @@ const UsersList = () => {
           <div className="flex justify-end mt-5">
             <div className="flex justify-between items-center gap-4 mt-4 ml-auto">
               <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
-                Previous
+                Precedente
               </Button>
               <span>
-                Page {currentPage} of {totalPages}
+                Pagina {currentPage} di {totalPages}
               </span>
               <Button
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
               >
-                Next
+                Successiva
               </Button>
             </div>
           </div>
