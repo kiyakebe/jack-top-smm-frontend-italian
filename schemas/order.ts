@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-// Base schema for all order types
+// Base schema per tutti i tipi di ordine
 const baseOrderSchema = z.object({
   type: z
     .string()
-    .min(1, "Type is required")
+    .min(1, "Il tipo è obbligatorio")
     .refine(
       (val) => {
         return [
@@ -20,87 +20,93 @@ const baseOrderSchema = z.object({
         ].includes(val);
       },
       {
-        message: "Invalid order type",
+        message: "Tipo di ordine non valido",
       }
     ),
-  serviceId: z.string().min(1, "Service ID is required"),
-  price: z.number().min(0, "Price cannot be negative").optional(),
+  serviceId: z.string().min(1, "L'ID del servizio è obbligatorio"),
+  price: z.number().min(0, "Il prezzo non può essere negativo").optional(),
 });
 
-// Default order schema
+// Schema ordine default
 const defaultOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  quantity: z.number().int().min(1, "Quantity must be at least 1"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  quantity: z.number().int().min(1, "La quantità deve essere almeno 1"),
   runs: z.number().int().optional(),
   interval: z.number().int(),
 });
 
-// Package order schema
+// Schema ordine package
 const packageOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
 });
 
-// Custom comments order schema
+// Schema ordine custom comments
 const customCommentsOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  comments: z.string().min(1, "Comments are required"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  comments: z.string().min(1, "I commenti sono obbligatori"),
 });
 
-// Mentions with hashtags order schema
+// Schema ordine mentions with hashtags
 const mentionsWithHashtagsOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  quantity: z.number().int().min(1, "Quantity must be at least 1"),
-  usernames: z.string().min(1, "Usernames are required"),
-  hashtags: z.string().min(1, "Hashtags are required"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  quantity: z.number().int().min(1, "La quantità deve essere almeno 1"),
+  usernames: z.string().min(1, "I nomi utente sono obbligatori"),
+  hashtags: z.string().min(1, "Gli hashtag sono obbligatori"),
 });
 
-// Mentions hashtag order schema
+// Schema ordine mentions hashtag
 const mentionsHashtagOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  quantity: z.number().int().min(1, "Quantity must be at least 1"),
-  hashtag: z.string().min(1, "Hashtag is required"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  quantity: z.number().int().min(1, "La quantità deve essere almeno 1"),
+  hashtag: z.string().min(1, "L'hashtag è obbligatorio"),
 });
 
-// Subscriptions order schema
+// Schema ordine subscriptions
 const subscriptionsOrderSchema = baseOrderSchema.extend({
-  username: z.string().min(1, "Username is required"),
-  min: z.number().int().min(1, "Minimum quantity must be at least 1"),
-  max: z.number().int().min(1, "Maximum quantity must be at least 1"),
+  username: z.string().min(1, "Il nome utente è obbligatorio"),
+  min: z.number().int().min(1, "La quantità minima deve essere almeno 1"),
+  max: z.number().int().min(1, "La quantità massima deve essere almeno 1"),
   delay: z
     .number()
     .int()
     .min(0)
-    .max(600, "Delay must be between 0 and 600 minutes"),
+    .max(600, "Il ritardo deve essere compreso tra 0 e 600 minuti"),
   posts: z.number().int().positive().optional(),
   old_posts: z.number().int().positive().optional(),
   expiry: z
     .string()
-    .regex(/^\d{2}\/\d{2}\/\d{4}$/, "Expiry date must be in dd/mm/yyyy format")
+    .regex(
+      /^\d{2}\/\d{2}\/\d{4}$/,
+      "La data di scadenza deve essere nel formato gg/mm/aaaa"
+    )
     .optional(),
 });
 
-// Comment likes order schema
+// Schema ordine comment likes
 const commentLikesOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  quantity: z.number().int().min(1, "Quantity must be at least 1"),
-  username: z.string().min(1, "Username is required"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  quantity: z.number().int().min(1, "La quantità deve essere almeno 1"),
+  username: z.string().min(1, "Il nome utente è obbligatorio"),
 });
 
-// Poll order schema
+// Schema ordine poll
 const pollOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  quantity: z.number().int().min(1, "Quantity must be at least 1"),
-  answer_number: z.number().int().positive("Answer number must be positive"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  quantity: z.number().int().min(1, "La quantità deve essere almeno 1"),
+  answer_number: z
+    .number()
+    .int()
+    .positive("Il numero della risposta deve essere positivo"),
 });
 
-// Comment replies order schema
+// Schema ordine comment replies
 const commentRepliesOrderSchema = baseOrderSchema.extend({
-  link: z.string().min(1, "Link/Username is required"),
-  username: z.string().min(1, "Username is required"),
-  comments: z.string().min(1, "Comments are required"),
+  link: z.string().min(1, "Link/Nome utente è obbligatorio"),
+  username: z.string().min(1, "Il nome utente è obbligatorio"),
+  comments: z.string().min(1, "I commenti sono obbligatori"),
 });
 
-// Combined schema for all order types
+// Schema combinato per tutti i tipi di ordine
 export const createOrderSchema = z.discriminatedUnion("type", [
   defaultOrderSchema.extend({ type: z.literal("default") }),
   packageOrderSchema.extend({ type: z.literal("package") }),

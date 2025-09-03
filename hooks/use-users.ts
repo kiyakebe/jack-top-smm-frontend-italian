@@ -1,25 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import api from "@/lib/axios";
 import type { User, ApiResponse } from "@/types/api";
 import { z } from "zod";
 
-// Schemas for user management
+// Schemi per la gestione utenti
 export const createUserSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().min(2, "Il nome deve contenere almeno 2 caratteri"),
+  email: z.string().email("Indirizzo email non valido"),
+  password: z.string().min(8, "La password deve contenere almeno 8 caratteri"),
 });
 
 export const updateUserSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").optional(),
-  email: z.string().email("Invalid email address").optional(),
+  name: z
+    .string()
+    .min(2, "Il nome deve contenere almeno 2 caratteri")
+    .optional(),
+  email: z.string().email("Indirizzo email non valido").optional(),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters")
+    .min(8, "La password deve contenere almeno 8 caratteri")
     .optional(),
   role: z.enum(["user", "admin"]).optional(),
 });
@@ -56,7 +59,7 @@ export function useUsers() {
     },
     onSuccess: () => {
       query.refetch();
-      toast.success("User created successfully!");
+      toast.success("Utente creato con successo!");
     },
   });
 
@@ -76,7 +79,7 @@ export function useUsers() {
     },
     onSuccess: () => {
       query.refetch();
-      toast.success("User updated successfully!");
+      toast.success("Utente aggiornato con successo!");
     },
   });
 
@@ -86,7 +89,7 @@ export function useUsers() {
     },
     onSuccess: () => {
       query.refetch();
-      toast.success("User deleted successfully!");
+      toast.success("Utente eliminato con successo!");
     },
   });
 
@@ -96,7 +99,7 @@ export function useUsers() {
     },
     onSuccess: () => {
       query.refetch();
-      toast.success("User Banned successfully!");
+      toast.success("Utente bannato con successo!");
     },
   });
 
@@ -106,7 +109,7 @@ export function useUsers() {
     },
     onSuccess: () => {
       query.refetch();
-      toast.success("User Un Banned successfully!");
+      toast.success("Ban rimosso con successo!");
     },
   });
 

@@ -27,7 +27,7 @@ export function useCreateOrder() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
-      toast.success("Order created successfully!");
+      toast.success("Ordine creato con successo!");
     },
   });
 }
@@ -42,30 +42,10 @@ export function useRefillOrders() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
-      toast.success("Orders refilled successfully!");
+      toast.success("Ordini ricaricati con successo!");
     },
   });
 }
-
-// export function useCancelOrders() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: async (orderIds: number[]) => {
-//       console.log({
-//         orderIds: orderIds,
-//       });
-//       const response = await api.post("/topsmm/orders/cancel", {
-//         orderIds: orderIds,
-//       });
-//       return response.data;
-//     },
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["orders"] });
-//       toast.success("Orders cancelled successfully!");
-//     },
-//   });
-// }
 
 export function useCancelOrders() {
   const queryClient = useQueryClient();
@@ -82,7 +62,9 @@ export function useCancelOrders() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
-      toast.success(data.data[0].cancel.error || "Orders cancelled successfully!");
+      toast.success(
+        data.data[0].cancel.error || "Ordini annullati con successo!"
+      );
     },
   });
 }

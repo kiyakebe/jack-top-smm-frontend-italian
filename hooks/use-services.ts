@@ -46,7 +46,7 @@ export function useCreateService() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["services"] });
-      toast.success("Service created successfully!");
+      toast.success("Servizio creato con successo!");
     },
   });
 }
@@ -60,7 +60,7 @@ export function useDeleteService() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["services"] });
-      toast.success("Service deleted successfully!");
+      toast.success("Servizio eliminato con successo!");
     },
   });
 }
