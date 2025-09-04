@@ -202,7 +202,7 @@ export default function ServicesPage() {
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap gap-1">
+                  {/* <div className="flex flex-wrap gap-1">
                     {service.dripfeed && (
                       <Badge variant="secondary" className="text-xs">
                         Dripfeed
@@ -218,7 +218,7 @@ export default function ServicesPage() {
                         Annulla
                       </Badge>
                     )}
-                  </div>
+                  </div> */}
 
                   <div className="flex gap-2 pt-2">
                     <Button
